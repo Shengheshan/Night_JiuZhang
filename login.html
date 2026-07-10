@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>遗失讨论区 - 登录</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="level1-body">
+  <main class="level1-shell auth-shell">
+    <section class="auth-card">
+      <p class="label">ACCESS / PERSONAL</p>
+      <p class="horror-banner">私密入口 · 失效验证</p>
+      <h2>登录进入个人主页</h2>
+      <p>这里是论坛的私有入口。输入账号与密码后，才能继续查看你的个人档案。若你看见了别的字，请不要把它们当成误解。</p>
+
+      <form class="auth-form" id="login-form">
+        <input class="input-field" id="username" name="username" type="text" placeholder="账号" required>
+        <input class="input-field" id="password" name="password" type="password" placeholder="密码" required>
+        <button type="submit">进入</button>
+      </form>
+
+      <p class="status-text" id="login-status">当前可用账号：demo / demo</p>
+      <div class="buttons">
+        <a class="ghost-link" href="level1.html">返回论坛</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const loginForm = document.getElementById('login-form');
+    const loginStatus = document.getElementById('login-status');
+
+    loginForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const validUsers = {
+        demo: 'demo',
+        admin: '404archive'
+      };
+
+      if (validUsers[username] === password) {
+        localStorage.setItem('forumUser', JSON.stringify({
+          username,
+          displayName: username === 'admin' ? '管理员' : '访客'
+        }));
+        window.location.href = 'personal.html';
+      } else {
+        loginStatus.textContent = '账号或密码不匹配，请检查后再试。';
+        loginStatus.classList.add('error');
+      }
+    });
+  </script>
+</body>
+</html>

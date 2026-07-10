@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 Archive - Level 1 Deep</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="level1-body is-haunted">
+  <main class="level1-shell">
+    <header class="level1-header">
+      <div class="scribble-layer" aria-hidden="true">
+        <span>别回头</span>
+        <span>记得</span>
+        <span>他在看</span>
+        <span>门开了</span>
+      </div>
+      <div class="level1-topbar">
+        <p class="label">LEVEL 1 / FORUM ARCHIVE</p>
+        <a class="ghost-link" href="login.html">进入个人主页</a>
+      </div>
+      <p class="horror-banner">废弃档案 · 失控入口</p>
+      <h1><span class="title-flash is-dead">死人的</span>讨论区</h1>
+      <p class="text">
+        这里是被时间掩埋的旧论坛入口。<br>
+        每一条标题都像一扇门，点开就会把你送进下一层。<br>
+        你能听见纸张在潮湿中发出细小的尖叫。
+      </p>
+
+      <form class="forum-search" id="forum-search-form">
+        <input type="text" id="forum-search-input" placeholder="搜索标题、关键词..." />
+        <button type="submit">搜索</button>
+      </form>
+      <p class="search-hint" id="search-hint">输入“旧站”“登录”“结局”等关键词试试。</p>
+    </header>
+
+    <section class="forum-layout">
+      <aside class="forum-sidebar">
+        <div class="sidebar-card">
+          <h2>板块</h2>
+          <ul>
+            <li class="active">· 旧站回声</li>
+            <li>· 失踪档案</li>
+            <li>· 失效通知</li>
+          </ul>
+        </div>
+        <div class="sidebar-card subtle">
+          <p>提示：标题越黑，说明入口越近。</p>
+        </div>
+      </aside>
+
+      <div class="forum-list">
+        <div class="search-summary" id="search-summary">显示全部 4 条讨论</div>
+
+        <a class="forum-post danger" href="level2.html" data-keywords="旧站 存档 首页 重写 入口">
+          <div class="post-tag">01 / 旧站存档</div>
+          <h3>为什么首页会在凌晨前被重写？</h3>
+          <p>有人说，系统会在某个时刻把所有“正常”的入口替换掉。</p>
+          <span class="post-meta">匿名用户 · 3分钟前</span>
+        </a>
+
+        <a class="forum-post" href="level3.html" data-keywords="失踪 档案 截图 字符 线索">
+          <div class="post-tag">02 / 失踪档案</div>
+          <h3>最后一张截图里，为什么只有一行字？</h3>
+          <p>像是有人故意把关键内容留在边角，等着被看见。</p>
+          <span class="post-meta">回声室 · 12分钟前</span>
+        </a>
+
+        <a class="forum-post" href="level4.html" data-keywords="失效 通知 登录 系统 入口">
+          <div class="post-tag">03 / 失效通知</div>
+          <h3>旧登录系统从来没有真正关闭过</h3>
+          <p>只要你知道正确的入口，哪怕它看起来像一封普通通知。</p>
+          <span class="post-meta">管理员 · 1小时前</span>
+        </a>
+
+        <a class="forum-post" href="ending.html" data-keywords="结局 最后一页 终端 结束">
+          <div class="post-tag">04 / 结局</div>
+          <h3>你终于找到真正的最后一页</h3>
+          <p>这一次，所有标题都指向同一个结局。</p>
+          <span class="post-meta">终端 · 2小时前</span>
+        </a>
+      </div>
+    </section>
+
+    <div class="buttons">
+      <button onclick="goToPage('level1.html')">返回论坛主页</button>
+    </div>
+
+    <div class="blood-scripture" aria-hidden="true">
+      अवशेषं नश्यति, परं स्मरणं नित्यम्
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    const searchForm = document.getElementById('forum-search-form');
+    const searchInput = document.getElementById('forum-search-input');
+    const searchSummary = document.getElementById('search-summary');
+    const posts = Array.from(document.querySelectorAll('.forum-post'));
+
+    function filterPosts(query = '') {
+      const keyword = query.trim().toLowerCase();
+      let visibleCount = 0;
+
+      posts.forEach((post) => {
+        const haystack = `${post.textContent} ${post.dataset.keywords || ''}`.toLowerCase();
+        const matched = !keyword || haystack.includes(keyword);
+        post.classList.toggle('is-hidden', !matched);
+        if (matched) visibleCount += 1;
+      });
+
+      if (!keyword) {
+        searchSummary.textContent = `显示全部 ${visibleCount} 条讨论`;
+      } else if (visibleCount > 0) {
+        searchSummary.textContent = `匹配到 ${visibleCount} 条讨论`;
+      } else {
+        searchSummary.textContent = '没有找到匹配的讨论。';
+      }
+    }
+
+    searchForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      filterPosts(searchInput.value);
+    });
+
+    searchInput.addEventListener('input', () => {
+      if (!searchInput.value.trim()) {
+        filterPosts('');
+      }
+    });
+
+    filterPosts('');
+  </script>
+</body>
+</html>

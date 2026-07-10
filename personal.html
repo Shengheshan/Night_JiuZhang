@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>遗失讨论区 - 个人主页</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="level1-body">
+  <main class="level1-shell">
+    <header class="profile-header">
+      <p class="label">PROFILE / PRIVATE</p>
+      <p class="horror-banner">档案室 · 旧名留存</p>
+      <h1 id="profile-name">加载中...</h1>
+      <p>这是你的私有档案页，存放着你在旧论坛留下的身份与足迹。那些被涂抹的字句并不是真的消失了，只是被藏进了更深的地方。</p>
+    </header>
+
+    <section class="profile-grid">
+      <div class="profile-card">
+        <h3>身份信息</h3>
+        <div class="profile-meta">
+          <span class="profile-pill" id="profile-role">访客</span>
+          <span class="profile-pill">论坛成员</span>
+          <span class="profile-pill">旧站回声</span>
+        </div>
+        <ul>
+          <li>账号：<span id="profile-username">-</span></li>
+          <li>登录状态：已验证</li>
+          <li>最近访问：遗失讨论区</li>
+        </ul>
+      </div>
+
+      <div class="profile-card">
+        <h3>最近动态</h3>
+        <ul>
+          <li>阅读了“旧登录系统从来没有真正关闭过”</li>
+          <li>搜索了“结局”关键词，命中 1 条讨论</li>
+          <li>进入了个人档案页，确认身份存在</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="buttons">
+      <a class="ghost-link" href="level1.html">返回论坛</a>
+      <button id="logout-btn">退出登录</button>
+    </div>
+  </main>
+
+  <script>
+    const savedUser = JSON.parse(localStorage.getItem('forumUser') || 'null');
+
+    if (!savedUser) {
+      window.location.href = 'login.html';
+    } else {
+      document.getElementById('profile-name').textContent = savedUser.displayName || savedUser.username;
+      document.getElementById('profile-username').textContent = savedUser.username;
+      document.getElementById('profile-role').textContent = savedUser.username === 'admin' ? '管理员' : '访客';
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      localStorage.removeItem('forumUser');
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>
