@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>微信</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Microsoft YaHei", Arial, sans-serif;
+      background: radial-gradient(circle at top, #1f6c3e 0%, #08130a 55%, #050809 100%);
+      color: #eef8ee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+    .wechat-shell {
+      width: min(700px, 100%);
+      background: rgba(16, 28, 18, 0.96);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.24);
+      text-align: center;
+    }
+    .wechat-shell h1 {
+      margin: 0 0 16px;
+      font-size: 2.1rem;
+      letter-spacing: 0.02em;
+    }
+    .wechat-shell p {
+      color: #b8d9b6;
+      line-height: 1.8;
+      font-size: 1.05rem;
+      margin: 0 0 22px;
+    }
+    .wechat-button {
+      display: inline-block;
+      padding: 14px 24px;
+      border-radius: 999px;
+      background: #519f6d;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .wechat-button:hover {
+      background: #6bb386;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <div class="wechat-shell">
+    <h1>微信</h1>
+    <p>这是你的微信界面占位页。点击下面的按钮返回电脑桌面或继续打开邮箱。</p>
+    <a class="wechat-button" href="desktop.html">返回桌面</a>
+  </div>
+</body>
+</html>

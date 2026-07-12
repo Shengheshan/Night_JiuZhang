@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>暗夜九章：真相追凶</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: "Microsoft YaHei", Arial, sans-serif;
+      background: linear-gradient(180deg, #11131f 0%, #212748 100%);
+      color: #eef2ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+    .intro-page {
+      width: min(980px, 100%);
+      background: rgba(16, 24, 56, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      box-shadow: 0 24px 90px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
+    }
+    .intro-hero {
+      padding: 42px 46px 32px;
+    }
+    .intro-title {
+      margin: 0 0 14px;
+      font-size: clamp(2.1rem, 4vw, 3.6rem);
+      line-height: 1.05;
+      letter-spacing: 0.03em;
+    }
+    .intro-subtitle {
+      margin: 0 0 4px;
+      color: #8fa7ff;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+    .intro-text {
+      margin: 20px 0 0;
+      line-height: 1.85;
+      font-size: 1.05rem;
+      color: #d7ddff;
+    }
+    .intro-text strong {
+      color: #fff;
+      font-weight: bold;
+    }
+    .alert-line strong {
+      color: #b0b8ff;
+      font-weight: 800;
+    }
+    .intro-button-wrap {
+      margin: 32px 0 0;
+      display: flex;
+      justify-content: center;
+    }
+    .intro-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 220px;
+      padding: 16px 22px;
+      background: #5f80ff;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 700;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .intro-button:hover {
+      transform: translateY(-2px);
+      background: #7ea4ff;
+    }
+    .photo-section {
+      background: rgba(13, 18, 45, 0.92);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 32px 42px 42px;
+      text-align: center;
+    }
+    .family-photo {
+      width: min(100%, 580px);
+      max-height: 420px;
+      object-fit: cover;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 20px 65px rgba(15, 23, 60, 0.35);
+    }
+    .moments-photo {
+      width: 100%;
+      max-width: 760px;
+      height: auto;
+      object-fit: contain;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 20px 65px rgba(15, 23, 60, 0.35);
+      margin-top: 22px;
+    }
+    .photo-divider {
+      height: 1px;
+      width: 70%;
+      margin: 24px auto 0;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .photo-caption {
+      margin: 18px auto 0;
+      color: #bec7ff;
+      font-size: 0.98rem;
+      max-width: 100%;
+    }
+    @media (max-width: 680px) {
+      .intro-page {
+        border-radius: 16px;
+      }
+      .intro-hero {
+        padding: 28px 22px 24px;
+      }
+      .intro-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="intro-page">
+    <section class="intro-hero">
+      <p class="intro-subtitle">当你凝视深渊，深渊也在凝视你</p>
+      <h1 class="intro-title">九章山迷案：真相追凶</h1>
+      <div class="intro-text">
+        <p>你叫林浩，是美国某某某大学的本科生，拥有一位双胞胎哥哥林宇。他成绩不如你好，高中毕业后便挑起家里的重担，和父亲一起打理小卖部。</p>
+        <p>林宇是个户外运动达人，喜欢爬山、交旅友，朋友圈里满是他拍摄的各种小众景区打卡照片。国庆假期后，你突然收到了父母传来的噩耗：林宇失踪了。</p>
+        <p>你急忙订了当天的飞机回到家，抵家时已经有两位警察在场。父母面容憔悴，向警察描述最后一次见到哥哥的细节：</p>
+        <p>“我们上一次见小宇，是在九月三十号，他说国庆假期要去九章山玩。十月一号他到酒店后还给他妈打电话报平安，说他四天后就回来。结果这都过去七天了，他还没回来，电话也打不通。”</p>
+        <p>当天晚上，警察电话传来噩耗：林宇的尸体在九章山下的一处悬崖下面被发现，法医鉴定结果为坠亡，死亡时间为十月二号下午。</p>
+        <p>你和父母悲痛欲绝，最终接受现实，将林宇的遗体领回并为他举行了葬礼。但你在离开时忽然收到一封奇怪邮件，文字让你瞪大了眼：</p>
+        <p class="alert-line"><strong>“你哥哥的死亡绝不是意外！是有人在暗中捣鬼！”</strong></p>
+        <p><strong>游戏目标：</strong> 找出哥哥真正的死因。</p>
+        <p><strong>游戏指引：</strong> 你可以通过在搜索框搜索关键词的方式发现更多隐藏的细节。大部分关键词都会<strong>加粗</strong>（当然不是全部）。当剧情探索到某些特定程度，你会在聊天软件收到新消息。当剧情卡住时，不如试着去检查一下。</p>
+        <p>祝你好运。</p>
+      </div>
+      <div class="intro-button-wrap">
+        <a class="intro-button" href="desktop.html" target="_blank" rel="noopener noreferrer">开始游戏</a>
+      </div>
+    </section>
+    <section class="photo-section">
+      <img src="../images/Family_Photo.png" alt="林宇家的全家福" class="family-photo">
+      <p class="photo-caption">林宇家的全家福</p>
+      <div class="photo-divider"></div>
+      <img src="../images/moments_1.png" alt="林宇的朋友圈" class="moments-photo">
+      <p class="photo-caption">林宇的朋友圈</p>
+    </section>
+  </div>
+</body>
+</html>

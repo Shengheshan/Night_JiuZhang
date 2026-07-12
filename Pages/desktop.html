@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Windows 桌面</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+      background: #0f3c7f;
+      color: #eef5ff;
+    }
+    body {
+      background-image:
+        radial-gradient(circle at 20% 10%, rgba(255,255,255,0.08), transparent 16%),
+        radial-gradient(circle at 90% 12%, rgba(255,255,255,0.05), transparent 14%),
+        linear-gradient(180deg, rgba(24,85,149,0.94), rgba(8,23,47,0.98));
+      display: flex;
+      justify-content: flex-start;
+      padding: 0;
+      min-height: 100vh;
+    }
+    .desktop {
+      width: 100%;
+      max-width: none;
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      padding: 24px 24px 80px;
+    }
+    .sidebar {
+      display: grid;
+      grid-template-columns: 88px;
+      gap: 18px;
+      align-items: flex-start;
+    }
+    .desktop-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 92px;
+      text-decoration: none;
+      color: #eef5ff;
+      transition: transform 0.18s ease, color 0.18s ease;
+      position: relative;
+    }
+    .desktop-icon:hover {
+      transform: translateY(-3px);
+      color: #f7fbff;
+    }
+    .icon-surface {
+      width: 88px;
+      height: 88px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      box-shadow: 0 16px 30px rgba(0,0,0,0.24);
+      display: grid;
+      place-items: center;
+      margin-bottom: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .icon-label {
+      margin: 0;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-align: center;
+      line-height: 1.3;
+      max-width: 92px;
+      word-break: break-word;
+    }
+    .desktop-icon.disabled {
+      opacity: 0.75;
+      cursor: default;
+      pointer-events: none;
+    }
+    .desktop-main {
+      flex: 1;
+      margin-left: 120px;
+    }
+    .taskbar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      background: rgba(6,14,34,0.96);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 -10px 26px rgba(0,0,0,0.28);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+    .taskbar-left,
+    .taskbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .start-button {
+      width: 44px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.08);
+      display: grid;
+      place-items: center;
+      color: #eef5ff;
+      font-size: 1.2rem;
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+    .pinned-icons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pinned-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.08);
+      display: grid;
+      place-items: center;
+      color: #dbe9ff;
+      border: 1px solid rgba(255,255,255,0.12);
+      cursor: pointer;
+      transition: transform 0.16s ease, background 0.16s ease;
+    }
+    .pinned-icon:hover {
+      background: rgba(255,255,255,0.14);
+      transform: translateY(-1px);
+    }
+    .taskbar-right {
+      color: #c8d6ff;
+      font-size: 0.9rem;
+      gap: 18px;
+    }
+    .taskbar-right .time {
+      font-weight: 700;
+      color: #f5f9ff;
+    }
+    @media (max-width: 780px) {
+      .desktop {
+        padding: 18px 16px 80px;
+      }
+      .sidebar {
+        grid-template-columns: repeat(2, 88px);
+        gap: 14px;
+      }
+      .desktop-main {
+        margin-left: 0;
+        margin-top: 20px;
+      }
+      .taskbar {
+        padding: 0 12px;
+      }
+      .taskbar-right {
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="desktop">
+    <div class="sidebar">
+      <div class="desktop-icon disabled" title="我的电脑">
+        <div class="icon-surface">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="9" width="30" height="24" rx="5" fill="#5A8BFF"/>
+            <rect x="11" y="13" width="20" height="12" rx="3" fill="#DCE8FF" opacity="0.8"/>
+            <path d="M18 32H24" stroke="#DCE8FF" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <p class="icon-label">我的电脑</p>
+      </div>
+      <div class="desktop-icon disabled" title="回收站">
+        <div class="icon-surface">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="12" width="22" height="20" rx="5" fill="#9CC6FF"/>
+            <path d="M14 16H28" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
+            <path d="M16 16V12H26V16" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
+            <path d="M18 24L21 27L26 24" stroke="#4472C4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <p class="icon-label">回收站</p>
+      </div>
+      <div class="desktop-icon disabled" title="无畏契约">
+        <div class="icon-surface">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="42" height="42" rx="12" fill="#14161D"/>
+            <path d="M12 12L16 15L23 12L20 16L12 24L16 16L23 24L20 32L12 12Z" fill="#F84B4B"/>
+          </svg>
+        </div>
+        <p class="icon-label">无畏契约</p>
+      </div>
+      <div class="desktop-icon disabled" title="WeGame">
+        <div class="icon-surface">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="21" cy="21" r="18" fill="#00C140"/>
+            <path d="M16 28C18.8 30 24 29.2 25.4 27.2C27 25 26.4 20.6 30 19.6" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="28.5" cy="18" r="3" fill="#fff"/>
+          </svg>
+        </div>
+        <p class="icon-label">WeGame</p>
+      </div>
+      <div class="desktop-icon disabled" title="Steam">
+        <div class="icon-surface">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="42" height="42" rx="12" fill="#0F1D36"/>
+            <circle cx="18" cy="28" r="7" fill="#7FB7FF"/>
+            <circle cx="27" cy="19" r="4.5" fill="#D4E5FF"/>
+            <path d="M20 28L27 21" stroke="#F5FBFF" stroke-width="4" stroke-linecap="round"/>
+            <path d="M25 22L29 19" stroke="#F5FBFF" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <p class="icon-label">Steam</p>
+      </div>
+      <a class="desktop-icon" href="index.html" title="打开 QQ 邮箱" target="_blank" rel="noopener noreferrer">
+        <div class="icon-surface">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="8" width="26" height="26" rx="8" fill="#0065FF"/>
+            <path d="M13 16H29" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+            <path d="M13 22H29" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+            <path d="M13 28H21" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <p class="icon-label">QQ 邮箱</p>
+      </a>
+      <a class="desktop-icon" href="Wechat.html" title="打开微信" target="_blank" rel="noopener noreferrer">
+        <div class="icon-surface">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="8" width="26" height="26" rx="8" fill="#2DC100"/>
+            <path d="M18 20C18 18.3431 19.3431 17 21 17H25C26.6569 17 28 18.3431 28 20V24C28 25.6569 26.6569 27 25 27H23L20 30V27.5C20 26.6716 19.3284 26 18.5 26H18" fill="#fff"/>
+            <circle cx="19.5" cy="21.5" r="1.4" fill="#2DC100"/>
+            <circle cx="24" cy="21.5" r="1.4" fill="#2DC100"/>
+          </svg>
+        </div>
+        <p class="icon-label">微信</p>
+      </a>
+    </div>
+    <div class="desktop-main"></div>
+  </div>
+  <div class="taskbar">
+    <div class="taskbar-left">
+      <div class="start-button">🪟</div>
+      <div class="pinned-icons">
+        <div class="pinned-icon" title="微信">💬</div>
+        <div class="pinned-icon" title="邮箱">📧</div>
+      </div>
+    </div>
+    <div class="taskbar-right">
+      <div class="status">桌面</div>
+      <div class="time">18:46</div>
+      <div class="date">2026/07/12</div>
+    </div>
+  </div>
+</body>
+</html>
