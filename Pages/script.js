@@ -4,28 +4,26 @@ function goToPage(pageName) {
 
 const mails = {
   "red-mail": {
-        title: "【置顶】不要相信收件箱里的时间",
-        from: "unknown@archive.local",
+        title: "不要相信警方的结论</span>",
+        from: "mysterious@shadow.net",
         to: "user@qq.com",
-        time: "明天 00:03",
-        danger: true,
+        time: "今天 00:01",
         content: `
-            <p>你终于打开了这封邮件。</p>
+            <p>这不是什么玩笑。</p>
 
-            <p>如果你能看到这里，说明入口还没有完全关闭。</p>
+            <p>我的名字叫丁华，我是一名记者，正在追踪一系列失踪案与死亡疑点。</p>
 
-            <p>不要相信左边那些普通邮件。它们只是为了让这个页面看起来正常。</p>
+            <p>写这封邮件是因为我发现了一些不寻常的迹象，你哥哥的死亡很可能和我调查的案件有关。</p>
 
-            <p>真正的档案不在收件箱里，而在下一层。</p>
+            <p>我手里掌握了一些线索，还有一些疑点。若你愿意配合，我建议你尽快联系我。</p>
+
+            <p>具体信息请添加微信：<strong>DingHua_101</strong></p>
+            <p style="color:#b00000; font-weight:700;">这是我唯一留下的联络方式。</p>
 
             <div class="warning-box">
-            系统提示：检测到一条异常跳转记录。<br>
-            路径：<strong>/level1.html</strong>
+              记住：不要把这件事当成普通阴谋。<br>
+              你越早行动，越可能找到真相。
             </div>
-
-            <a class="next-link" href="level1.html" target="_blank" rel="noopener noreferrer">
-            打开异常档案
-            </a>
         `
 },
 

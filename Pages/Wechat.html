@@ -3,63 +3,113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>微信</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: "Microsoft YaHei", Arial, sans-serif;
-      background: radial-gradient(circle at top, #1f6c3e 0%, #08130a 55%, #050809 100%);
-      color: #eef8ee;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 24px;
-    }
-    .wechat-shell {
-      width: min(700px, 100%);
-      background: rgba(16, 28, 18, 0.96);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.24);
-      text-align: center;
-    }
-    .wechat-shell h1 {
-      margin: 0 0 16px;
-      font-size: 2.1rem;
-      letter-spacing: 0.02em;
-    }
-    .wechat-shell p {
-      color: #b8d9b6;
-      line-height: 1.8;
-      font-size: 1.05rem;
-      margin: 0 0 22px;
-    }
-    .wechat-button {
-      display: inline-block;
-      padding: 14px 24px;
-      border-radius: 999px;
-      background: #519f6d;
-      color: #fff;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background 0.2s ease, transform 0.2s ease;
-    }
-    .wechat-button:hover {
-      background: #6bb386;
-      transform: translateY(-2px);
-    }
-  </style>
+  <title>微信 - WeChat</title>
+  <link rel="stylesheet" href="wechat.css">
 </head>
 <body>
-  <div class="wechat-shell">
-    <h1>微信</h1>
-    <p>这是你的微信界面占位页。点击下面的按钮返回电脑桌面或继续打开邮箱。</p>
-    <a class="wechat-button" href="desktop.html">返回桌面</a>
+  <div class="wechat-container">
+    <!-- 左侧功能栏 -->
+    <div class="left-panel">
+      <div class="avatar-area">
+        <div class="user-avatar"></div>
+      </div>
+      <div class="nav-buttons">
+        <button class="nav-btn chat-btn active" title="聊天" data-section="chat">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.5.3 2.9.9 4.2l-1.1 4c-.1.4.2.8.6.8.1 0 .2 0 .3-.1l4-1.1c1.3.6 2.7.9 4.2.9 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
+        </button>
+        <button class="nav-btn contact-btn" title="联系人" data-section="contact">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm0 2c-2.7 0-8 1.3-8 4v2h16v-2c0-2.7-5.3-4-8-4z"/></svg>
+        </button>
+        <button class="nav-btn collect-btn" title="收藏" data-section="collect">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.3L5.7 21l1.2-7.1L1 9.5l7.1-1.1L12 2l2.9 5.5 7.1 1.1-5.9 4.5 1.2 7.1z"/></svg>
+        </button>
+      </div>
+      <div class="menu-button">
+        <button class="nav-btn menu-btn" title="菜单">
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 中间列表栏 -->
+    <div class="middle-panel">
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+        <input type="text" placeholder="搜索" class="search-input" id="searchInput">
+      </div>
+
+      <div class="list-container" id="chatListContainer">
+        <div class="chat-list" id="chatList"></div>
+      </div>
+
+      <div class="list-container hidden" id="contactListContainer">
+        <div class="contact-section">
+          <div class="section-item new-friend-item" id="newFriendItem">
+            <div class="section-avatar">👥</div>
+            <div class="section-text">新的朋友</div>
+          </div>
+          <div class="section-item" id="groupChatItem">
+            <div class="section-avatar">👨‍👩‍👧‍👦</div>
+            <div class="section-text">群聊</div>
+          </div>
+          <div class="section-item" id="tagItem">
+            <div class="section-avatar">🏷️</div>
+            <div class="section-text">标签</div>
+          </div>
+          <div class="section-item" id="officialItem">
+            <div class="section-avatar">✓</div>
+            <div class="section-text">公众号</div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="contact-list" id="contactList"></div>
+      </div>
+    </div>
+
+    <!-- 右侧内容区域 -->
+    <div class="right-panel">
+      <div class="chat-view" id="chatView">
+        <div class="chat-header">
+          <div class="chat-title" id="chatTitle"></div>
+          <div class="chat-actions">
+            <button class="more-btn" title="更多">⋯</button>
+          </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages"></div>
+
+        <div class="chat-input-area">
+          <div class="input-toolbar">
+            <button class="input-tool-btn" title="表情"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="9" cy="10" r="1.5"/><circle cx="15" cy="10" r="1.5"/><path d="M9 15c1 1 2 1.5 3 1.5s2-.5 3-1.5"/></svg></button>
+            <button class="input-tool-btn" title="文件"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg></button>
+            <button class="input-tool-btn" title="截图"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></button>
+          </div>
+          <div class="input-field">
+            <div class="input-box" id="inputBox" contenteditable="false">当前为历史聊天记录，无法发送消息</div>
+            <button class="send-btn" id="sendBtn" disabled>发送</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-view hidden" id="profileView">
+        <div class="profile-card" id="profileCard"></div>
+      </div>
+
+      <div class="add-friend-view hidden" id="addFriendView">
+        <div class="add-friend-container">
+          <div class="add-friend-title">添加朋友</div>
+          <input type="text" placeholder="输入微信号、手机号" class="add-friend-input" id="addFriendInput">
+          <button class="add-friend-search-btn" id="searchFriendBtn">搜索</button>
+          <div class="add-friend-hint">可通过微信号、手机号搜索</div>
+          <div class="search-status" id="searchStatus"></div>
+          <div class="search-result-card" id="searchResultCard"></div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="wechat.js"></script>
 </body>
 </html>
