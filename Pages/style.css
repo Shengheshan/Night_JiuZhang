@@ -41,6 +41,28 @@ body {
   font-size: 14px;
 }
 
+.window-close-btn {
+  width: 34px;
+  height: 28px;
+  margin-left: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.16s ease, border-color 0.16s ease;
+}
+
+.window-close-btn:hover {
+  background: #e81123;
+  border-color: #e81123;
+}
+
 .user-info {
   margin-left: auto;
   font-size: 14px;
@@ -141,21 +163,62 @@ body {
   background: #f5f9ff;
 }
 
+.mail-item.active-item {
+  background: #e8f1ff;
+  box-shadow: inset 3px 0 0 #2d7dcc;
+}
+
 .mail-item.important {
-  background: #fff6f6;
+  background: #fff;
 }
 
 .mail-item.important:hover {
-  background: #ffecec;
+  background: #f5f9ff;
 }
 
 .mail-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 400;
   margin-bottom: 7px;
+}
+
+.mail-title-text {
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.mail-item.unread .mail-title {
+  font-weight: 700;
+}
+
+.mail-item.unread .mail-title::after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e02424;
+  flex-shrink: 0;
+}
+
+.spam-alert {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #d61111;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  flex-shrink: 0;
 }
 
 .red-title {

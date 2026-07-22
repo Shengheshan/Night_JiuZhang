@@ -73,6 +73,7 @@
           <div class="chat-title" id="chatTitle"></div>
           <div class="chat-actions">
             <button class="more-btn" title="更多">⋯</button>
+            <button class="window-close-btn" type="button" title="关闭页面" aria-label="关闭页面" onclick="closeCurrentPage()">×</button>
           </div>
         </div>
 
@@ -109,6 +110,43 @@
   </div>
 
   <div class="toast" id="toast"></div>
+
+  <div class="doc-modal hidden" id="docModal" role="dialog" aria-modal="true" aria-labelledby="docModalTitle">
+    <div class="doc-modal-mask" id="docModalMask"></div>
+    <div class="doc-modal-panel">
+      <div class="doc-modal-header">
+        <h3 id="docModalTitle">九章山异常死亡案件汇总</h3>
+      </div>
+      <div class="doc-modal-body" id="docModalBody">
+        <p>丁华整理的线索摘要（内部流出）：</p>
+        <div class="case-item">
+          <p><strong>受害者：</strong>田红</p>
+          <p><strong>照片记录：</strong>现场照片编号 2026-JZS-001（已打码）</p>
+          <p><strong>死亡时间：</strong>今天 11:20</p>
+          <p><strong>死亡地点：</strong>九章山北侧旧登山步道</p>
+          <p><strong>警方结论：</strong>失足坠亡（意外）</p>
+        </div>
+        <div class="case-item">
+          <p><strong>受害者：</strong>刘芮</p>
+          <p><strong>照片记录：</strong>现场照片编号 2026-JZS-007（已打码）</p>
+          <p><strong>死亡时间：</strong>8月31日 16:40</p>
+          <p><strong>死亡地点：</strong>九章山东南碎石坡</p>
+          <p><strong>警方结论：</strong>滑坠致死（意外）</p>
+        </div>
+        <div class="case-item">
+          <p><strong>受害者：</strong>林宇</p>
+          <p><strong>照片记录：</strong>医院留档照片编号 JZ-HOSP-M-114（封存）</p>
+          <p><strong>死亡时间：</strong>10月2日 下午</p>
+          <p><strong>死亡地点：</strong>九章山山脚西崖下方</p>
+          <p><strong>警方结论：</strong>坠亡（意外）</p>
+        </div>
+        <p class="doc-modal-hint">请滑到最底部后再关闭文档。</p>
+      </div>
+      <div class="doc-modal-footer">
+        <button class="doc-close-btn" id="docCloseBtn" disabled>关闭</button>
+      </div>
+    </div>
+  </div>
 
   <script src="wechat.js"></script>
 </body>

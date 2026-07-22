@@ -2,6 +2,118 @@ function goToPage(pageName) {
   window.open(pageName, '_blank', 'noopener,noreferrer');
 }
 
+const MAIL_STATE_KEY = 'mvp.mail.state.v1';
+const MAIL_CLICK_LOG_KEY = 'mvp.mail.clickLog.v1';
+const MAIL_DEFAULT_STATE = {
+  unread: ['red-mail', 'qq-official', 'pdd-ad'],
+  activeMailId: null
+};
+
+let mailState = loadMailState();
+
+function loadMailState() {
+  try {
+    const raw = localStorage.getItem(MAIL_STATE_KEY);
+    if (!raw) return { ...MAIL_DEFAULT_STATE };
+    const parsed = JSON.parse(raw);
+    return {
+      unread: Array.isArray(parsed.unread) ? parsed.unread : [...MAIL_DEFAULT_STATE.unread],
+      activeMailId: typeof parsed.activeMailId === 'string' ? parsed.activeMailId : null
+    };
+  } catch (error) {
+    return { ...MAIL_DEFAULT_STATE };
+  }
+}
+
+function saveMailState() {
+  localStorage.setItem(MAIL_STATE_KEY, JSON.stringify(mailState));
+}
+
+function recordMailClick(action, payload = {}) {
+  try {
+    const raw = localStorage.getItem(MAIL_CLICK_LOG_KEY);
+    const logs = raw ? JSON.parse(raw) : [];
+    logs.push({
+      action,
+      payload,
+      timestamp: new Date().toISOString()
+    });
+    const trimmed = logs.slice(-500);
+    localStorage.setItem(MAIL_CLICK_LOG_KEY, JSON.stringify(trimmed));
+  } catch (error) {
+    // Ignore logging failures to avoid interrupting page behavior.
+  }
+}
+
+function applyMailListState() {
+  const mailItems = document.querySelectorAll('.mail-item');
+  mailItems.forEach((item) => {
+    const mailId = item.dataset.mailId;
+    const isUnread = mailState.unread.includes(mailId);
+    const isActive = mailState.activeMailId === mailId;
+    item.classList.toggle('unread', isUnread);
+    item.classList.toggle('active-item', isActive);
+  });
+}
+
+function renderMailDetail(mailId) {
+  const mail = mails[mailId];
+  const detail = document.getElementById('mail-detail');
+  if (!mail || !detail) return;
+
+  detail.innerHTML = `
+    <div class="detail-header">
+      <h1 class="detail-title ${mail.danger ? 'danger' : ''}">
+        ${mail.title}
+      </h1>
+
+      <div class="detail-meta">
+        发件人：${mail.from}<br>
+        收件人：${mail.to}<br>
+        时间：${mail.time}
+      </div>
+    </div>
+
+    <div class="detail-content">
+      ${mail.content}
+    </div>
+  `;
+}
+
+function initializeMailPageState() {
+  applyMailListState();
+  if (mailState.activeMailId && mails[mailState.activeMailId]) {
+    renderMailDetail(mailState.activeMailId);
+  }
+}
+
+function setupMailClickTracking() {
+  document.addEventListener('click', (event) => {
+    const mailItem = event.target.closest('.mail-item');
+    if (mailItem) {
+      return;
+    }
+
+    const button = event.target.closest('button');
+    if (button) {
+      const label = button.getAttribute('aria-label') || button.textContent.trim();
+      recordMailClick('button_click', { label });
+      return;
+    }
+
+    const clickable = event.target.closest('a, .folder, .small-btn, .compose-btn');
+    if (clickable) {
+      const label = clickable.textContent.trim();
+      recordMailClick('ui_click', { label });
+    }
+  });
+}
+
+function closeCurrentPage() {
+  recordMailClick('close_page');
+  window.location.href = 'desktop.html';
+}
+
 const mails = {
   "red-mail": {
         title: "不要相信警方的结论</span>",
@@ -50,7 +162,7 @@ const mails = {
     title: "拼多多优惠精选",
     from: "promotion@pdd.example",
     to: "user@qq.com",
-    time: "昨天 18:40",
+    time: "今天 18:40",
     danger: false,
     content: `
       <p>你可能感兴趣的商品正在限时优惠。</p>
@@ -72,7 +184,7 @@ const mails = {
     title: "未知发件人",
     from: "lucky_prize@unknown.example",
     to: "user@qq.com",
-    time: "7月3日",
+    time: "今天 07:03",
     danger: false,
     content: `
       <p>恭喜你获得神秘大奖！</p>
@@ -90,24 +202,17 @@ const mails = {
 };
 
 function openMail(mailId) {
-  const mail = mails[mailId];
-  const detail = document.getElementById("mail-detail");
+  if (!mails[mailId]) return;
 
-  detail.innerHTML = `
-    <div class="detail-header">
-      <h1 class="detail-title ${mail.danger ? "danger" : ""}">
-        ${mail.title}
-      </h1>
-
-      <div class="detail-meta">
-        发件人：${mail.from}<br>
-        收件人：${mail.to}<br>
-        时间：${mail.time}
-      </div>
-    </div>
-
-    <div class="detail-content">
-      ${mail.content}
-    </div>
-  `;
+  mailState.activeMailId = mailId;
+  mailState.unread = mailState.unread.filter((id) => id !== mailId);
+  saveMailState();
+  applyMailListState();
+  renderMailDetail(mailId);
+  recordMailClick('open_mail', { mailId });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  initializeMailPageState();
+  setupMailClickTracking();
+});

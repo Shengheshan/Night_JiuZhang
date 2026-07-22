@@ -14,6 +14,7 @@
       <div class="logo">QQ邮箱</div>
       <div class="search-box">搜索邮件</div>
       <div class="user-info">user@qq.com</div>
+      <button class="window-close-btn" type="button" aria-label="关闭页面" onclick="closeCurrentPage()">×</button>
     </header>
 
     <!-- 主体区域 -->
@@ -41,28 +42,33 @@
           <button class="small-btn disabled-btn">标记为已读</button>
         </div>
 
-        <div class="mail-item important" onclick="openMail('red-mail')">
-          <div class="mail-title">不要相信警方的结论</span></div>
+        <div class="mail-item important unread" id="red-mail-item" data-mail-id="red-mail" onclick="openMail('red-mail')">
+          <div class="mail-title">
+            <span class="mail-title-text">不要相信警方的结论</span>
+          </div>
           <div class="mail-preview">紧急：你哥哥的死不是意外，务必查清。</div>
-          <div class="mail-time">今天 00:01</div>
+          <div class="mail-time">今天 23：01</div>
         </div>
 
-        <div class="mail-item" onclick="openMail('qq-official')">
+        <div class="mail-item unread" data-mail-id="qq-official" onclick="openMail('qq-official')">
           <div class="mail-title">QQ邮箱官方团队</div>
           <div class="mail-preview">你的邮箱近期登录提醒与安全建议。</div>
           <div class="mail-time">今天 09:21</div>
         </div>
 
-        <div class="mail-item" onclick="openMail('pdd-ad')">
+        <div class="mail-item unread" data-mail-id="pdd-ad" onclick="openMail('pdd-ad')">
           <div class="mail-title">拼多多优惠精选</div>
           <div class="mail-preview">限时补贴！你可能感兴趣的商品正在降价。</div>
-          <div class="mail-time">昨天 18:40</div>
+          <div class="mail-time">今天 18:40</div>
         </div>
 
-        <div class="mail-item spam" onclick="openMail('spam-mail')">
-          <div class="mail-title">未知发件人</div>
+        <div class="mail-item spam" data-mail-id="spam-mail" onclick="openMail('spam-mail')">
+          <div class="mail-title">
+            <span class="mail-title-text">未知发件人</span>
+            <span class="spam-alert" aria-label="可能为诈骗邮件" title="可能为诈骗邮件">!</span>
+          </div>
           <div class="mail-preview">恭喜你获得神秘大奖，请立即点击领取。</div>
-          <div class="mail-time">7月3日</div>
+          <div class="mail-time">今天 07:03</div>
         </div>
       </section>
 
