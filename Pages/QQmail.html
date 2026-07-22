@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QQ邮箱 - 收件箱</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="mail-app">
+
+    <!-- 顶部栏 -->
+    <header class="mail-header">
+      <div class="logo">QQ邮箱</div>
+      <div class="search-box">搜索邮件</div>
+      <div class="user-info">user@qq.com</div>
+      <button class="window-close-btn" type="button" aria-label="关闭页面" onclick="closeCurrentPage()">×</button>
+    </header>
+
+    <!-- 主体区域 -->
+    <div class="mail-body">
+
+      <!-- 左侧菜单 -->
+      <aside class="sidebar">
+        <button class="compose-btn disabled-btn">写信</button>
+
+        <nav class="folder-list">
+          <div class="folder active">收件箱 <span>4</span></div>
+          <div class="folder disabled-folder">星标邮件</div>
+          <div class="folder disabled-folder">群邮件</div>
+          <div class="folder disabled-folder">草稿箱</div>
+          <div class="folder disabled-folder">已发送</div>
+          <div class="folder disabled-folder">垃圾箱</div>
+        </nav>
+      </aside>
+
+      <!-- 中间邮件列表 -->
+      <section class="mail-list">
+        <div class="toolbar">
+          <button class="small-btn disabled-btn">删除</button>
+          <button class="small-btn disabled-btn">举报垃圾邮件</button>
+          <button class="small-btn disabled-btn">标记为已读</button>
+        </div>
+
+        <div class="mail-item important unread" id="red-mail-item" data-mail-id="red-mail" onclick="openMail('red-mail')">
+          <div class="mail-title">
+            <span class="mail-title-text">不要相信警方的结论</span>
+          </div>
+          <div class="mail-preview">紧急：你哥哥的死不是意外，务必查清。</div>
+          <div class="mail-time">今天 23：01</div>
+        </div>
+
+        <div class="mail-item unread" data-mail-id="qq-official" onclick="openMail('qq-official')">
+          <div class="mail-title">QQ邮箱官方团队</div>
+          <div class="mail-preview">你的邮箱近期登录提醒与安全建议。</div>
+          <div class="mail-time">今天 09:21</div>
+        </div>
+
+        <div class="mail-item unread" data-mail-id="pdd-ad" onclick="openMail('pdd-ad')">
+          <div class="mail-title">拼多多优惠精选</div>
+          <div class="mail-preview">限时补贴！你可能感兴趣的商品正在降价。</div>
+          <div class="mail-time">今天 18:40</div>
+        </div>
+
+        <div class="mail-item spam" data-mail-id="spam-mail" onclick="openMail('spam-mail')">
+          <div class="mail-title">
+            <span class="mail-title-text">未知发件人</span>
+            <span class="spam-alert" aria-label="可能为诈骗邮件" title="可能为诈骗邮件">!</span>
+          </div>
+          <div class="mail-preview">恭喜你获得神秘大奖，请立即点击领取。</div>
+          <div class="mail-time">今天 07:03</div>
+        </div>
+      </section>
+
+      <!-- 右侧邮件详情 -->
+      <section class="mail-detail" id="mail-detail">
+        <div class="empty-detail">
+          <h2>请选择一封邮件</h2>
+          <p>邮件内容会显示在这里。</p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
