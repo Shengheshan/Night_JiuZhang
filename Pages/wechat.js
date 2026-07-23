@@ -10,6 +10,8 @@ const appState = {
   reporterDocLocked: false,
   reporterDocRead: false,
   reporterDraft: '',
+  reporterObservationAttempts: 0,
+  reporterObservationHintShown: false,
   reporterMessages: [],
   reporterTyping: false
 };
@@ -17,12 +19,24 @@ const appState = {
 const WECHAT_STATE_KEY = 'mvp.wechat.state.v1';
 const WECHAT_CLICK_LOG_KEY = 'mvp.wechat.clickLog.v1';
 
+function readSessionJSON(key) {
+  try {
+    const raw = sessionStorage.getItem(key);
+    return raw ? JSON.parse(raw) : null;
+  } catch (error) {
+    return null;
+  }
+}
+
+function writeSessionJSON(key, value) {
+  sessionStorage.setItem(key, JSON.stringify(value));
+}
+
 function loadWechatState() {
   try {
-    const raw = localStorage.getItem(WECHAT_STATE_KEY);
-    if (!raw) return;
+    const parsed = readSessionJSON(WECHAT_STATE_KEY);
+    if (!parsed) return;
 
-    const parsed = JSON.parse(raw);
     if (parsed && typeof parsed === 'object') {
       if (typeof parsed.currentSection === 'string') appState.currentSection = parsed.currentSection;
       if (typeof parsed.activeChatId === 'string') appState.activeChatId = parsed.activeChatId;
@@ -34,6 +48,8 @@ function loadWechatState() {
       if (typeof parsed.reporterDocLocked === 'boolean') appState.reporterDocLocked = parsed.reporterDocLocked;
       if (typeof parsed.reporterDocRead === 'boolean') appState.reporterDocRead = parsed.reporterDocRead;
       if (typeof parsed.reporterDraft === 'string') appState.reporterDraft = parsed.reporterDraft;
+      if (typeof parsed.reporterObservationAttempts === 'number') appState.reporterObservationAttempts = parsed.reporterObservationAttempts;
+      if (typeof parsed.reporterObservationHintShown === 'boolean') appState.reporterObservationHintShown = parsed.reporterObservationHintShown;
       if (Array.isArray(parsed.reporterMessages)) appState.reporterMessages = parsed.reporterMessages;
       if (typeof parsed.reporterTyping === 'boolean') appState.reporterTyping = parsed.reporterTyping;
     }
@@ -43,19 +59,18 @@ function loadWechatState() {
 }
 
 function saveWechatState() {
-  localStorage.setItem(WECHAT_STATE_KEY, JSON.stringify(appState));
+  writeSessionJSON(WECHAT_STATE_KEY, appState);
 }
 
 function recordWechatClick(action, payload = {}) {
   try {
-    const raw = localStorage.getItem(WECHAT_CLICK_LOG_KEY);
-    const logs = raw ? JSON.parse(raw) : [];
+    const logs = readSessionJSON(WECHAT_CLICK_LOG_KEY) || [];
     logs.push({
       action,
       payload,
       timestamp: new Date().toISOString()
     });
-    localStorage.setItem(WECHAT_CLICK_LOG_KEY, JSON.stringify(logs.slice(-800)));
+    writeSessionJSON(WECHAT_CLICK_LOG_KEY, logs.slice(-800));
   } catch (error) {
     // Ignore logging failures to avoid interrupting interactions.
   }
@@ -280,6 +295,10 @@ const REPORTER_STORY_TURNS = [
   { sender: 'them', text: '尸体的额头上有一个血红色的印记，看起来像某种宗教的印记。我后面问了受害者的家属，他们都不记得见过这个印记。' },
   { sender: 'them', text: '因此我推断，这个印记是受害者在登山以后才有的。' },
   { sender: 'them', text: '后面的几起案件也同理，受害人的额头都有这个印记。' },
+  { sender: 'me', text: '这也不能说明。。。' },
+  { sender: 'them', text: '退一万步讲，这是巧合。可是，如果是坠崖身亡，身体保存度不可能这么完美。' },
+  { sender: 'them', text: '你见过你哥哥的尸体吗？' },
+  { sender: 'me', text: '没有，警方说尸体保存的不完整，为了保护我们的情绪，没给我们看，只给我们看了他手腕的手链，是妈妈送他的' },
   { sender: 'them', text: '今天我拖了个关系，偷偷溜进了九章医院太平间。你猜猜我在你哥哥的额头上发现了什么？' },
   { sender: 'them', type: 'image', text: '【图片】', imagePath: '../images/太平间尸体照片.png', alt: '太平间尸体照片' },
   { sender: 'them', text: '你别告诉我，这个印记之前就有。' },
@@ -297,8 +316,10 @@ const REPORTER_STORY_TURNS = [
   { sender: 'them', text: '我目前唯一确定的线索，就是所有受害人生前都曾经登录过这个论坛。' },
   { sender: 'them', text: '你可以查一查，说不定能发现什么有用的线索。' },
   { sender: 'them', text: '记住，别相信任何人，尤其是官方的。' },
-  { sender: 'me', text: '好的，保持联系。' }
 ];
+
+const REPORTER_OBSERVATION_INDEX = 6;
+const REPORTER_OBSERVATION_HINT = '请结合线索回答：你发现了什么规律？';
 
 function cloneReporterBootstrapMessages() {
   return REPORTER_BOOTSTRAP_MESSAGES.map((msg) => ({ ...msg }));
@@ -313,6 +334,8 @@ function ensureReporterStateInitialized(forceReset = false) {
       appState.reporterDocLocked = false;
       appState.reporterDocRead = false;
       appState.reporterDraft = '';
+      appState.reporterObservationAttempts = 0;
+      appState.reporterObservationHintShown = false;
     }
   }
 
@@ -322,6 +345,8 @@ function ensureReporterStateInitialized(forceReset = false) {
     appState.reporterDocLocked = false;
     appState.reporterDocRead = false;
     appState.reporterDraft = '';
+    appState.reporterObservationAttempts = 0;
+    appState.reporterObservationHintShown = false;
     appState.reporterTyping = false;
     appState.reporterMessages = cloneReporterBootstrapMessages();
     return;
@@ -437,6 +462,21 @@ function processNextReporterTurn() {
 
   const turn = REPORTER_STORY_TURNS[appState.reporterStoryIndex];
 
+  if (appState.reporterStoryIndex === REPORTER_OBSERVATION_INDEX) {
+    appState.reporterTyping = false;
+    syncReporterUI();
+    if (!appState.reporterObservationHintShown) {
+      appState.reporterObservationHintShown = true;
+      showToast('请手动输入你的观察后发送。', 4200);
+      setTimeout(() => {
+        if (isObservationInputPhase() && DOM.inputBox) {
+          DOM.inputBox.focus();
+        }
+      }, 0);
+    }
+    return;
+  }
+
   if (turn.sender === 'me') {
     appState.reporterTyping = false;
     appState.reporterDraft = turn.text;
@@ -490,6 +530,120 @@ function isReporterChatActive() {
   return appState.reporterAdded && appState.activeChatId === 'outqianyiding';
 }
 
+function isObservationInputPhase() {
+  return isReporterChatActive()
+    && !appState.reporterDocLocked
+    && !appState.reporterTyping
+    && appState.reporterStoryIndex === REPORTER_OBSERVATION_INDEX;
+}
+
+function containsObservationKeyword(text) {
+  const normalized = (text || '').replace(/\s+/g, '');
+  const keywords = ['九章山', '死亡地点', '地点', '地址', '地方'];
+  return keywords.some((keyword) => normalized.includes(keyword));
+}
+
+function isUnknownAnswer(text) {
+  const normalized = (text || '').replace(/\s+/g, '');
+  return normalized.includes('我不知道') || normalized === '不知道';
+}
+
+function isYouDontKnowAnswer(text) {
+  const normalized = (text || '').replace(/\s+/g, '');
+  return normalized.includes('你不知道');
+}
+
+function appendReporterMessage(sender, text) {
+  appState.reporterMessages.push({ sender, text, time: '' });
+}
+
+function runReporterTypingReplies(replies, onComplete) {
+  const queue = Array.isArray(replies) ? replies.filter(Boolean) : [];
+  if (queue.length === 0) {
+    if (typeof onComplete === 'function') onComplete();
+    return;
+  }
+
+  clearReporterFlowTimer();
+  appState.reporterTyping = true;
+  appState.reporterDraft = '';
+  syncReporterUI();
+
+  let index = 0;
+  const pushNext = () => {
+    reporterFlowTimer = setTimeout(() => {
+      appendReporterMessage('them', queue[index]);
+      index += 1;
+
+      if (index >= queue.length) {
+        appState.reporterTyping = false;
+        syncReporterUI();
+        if (typeof onComplete === 'function') {
+          onComplete();
+        }
+        return;
+      }
+
+      syncReporterUI();
+      pushNext();
+    }, 1500);
+  };
+
+  pushNext();
+}
+
+function handleObservationReply() {
+  const rawText = (DOM.inputBox?.textContent || '').trim();
+  if (!rawText) {
+    showToast('请先输入你的观察');
+    return;
+  }
+
+  appendReporterMessage('me', rawText);
+  recordWechatClick('send_reporter_observation', { text: rawText });
+
+  if (isYouDontKnowAnswer(rawText)) {
+    appState.reporterDraft = '';
+    syncReporterUI();
+    showToast('🙄 你在逗我吗', 4200);
+    return;
+  }
+
+  if (isUnknownAnswer(rawText)) {
+    appState.reporterObservationAttempts = 0;
+    appState.reporterDraft = '';
+    appState.reporterStoryIndex = REPORTER_OBSERVATION_INDEX + 1;
+    syncReporterUI();
+    runReporterTypingReplies(['🙄', '死者都是在九章山出事的。'], () => {
+      processNextReporterTurn();
+    });
+    return;
+  }
+
+  if (containsObservationKeyword(rawText)) {
+    appState.reporterObservationAttempts = 0;
+    appState.reporterDraft = '';
+    appState.reporterStoryIndex = REPORTER_OBSERVATION_INDEX + 1;
+    syncReporterUI();
+    runReporterTypingReplies(['你的观察很敏锐。'], () => {
+      processNextReporterTurn();
+    });
+    return;
+  }
+
+  if (appState.reporterObservationAttempts === 0) {
+    appState.reporterObservationAttempts = 1;
+    appState.reporterDraft = '';
+    syncReporterUI();
+    runReporterTypingReplies(['。。。']);
+    return;
+  }
+
+  appState.reporterDraft = '';
+  syncReporterUI();
+  showToast('请再次检查。如果真的发现不了，可以大方承认“你不知道”。', 5200);
+}
+
 function updateInputState() {
   if (!DOM.inputBox || !DOM.sendBtn) return;
 
@@ -514,6 +668,19 @@ function updateInputState() {
     DOM.inputBox.textContent = '请先点击丁华发来的文档并阅读到底，再继续回复';
     DOM.sendBtn.disabled = true;
     DOM.sendBtn.classList.add('is-disabled');
+    return;
+  }
+
+  if (isObservationInputPhase()) {
+    DOM.inputBox.setAttribute('contenteditable', 'true');
+    DOM.inputBox.setAttribute('aria-label', REPORTER_OBSERVATION_HINT);
+
+    if (document.activeElement !== DOM.inputBox) {
+      DOM.inputBox.textContent = appState.reporterDraft || '';
+    }
+
+    DOM.sendBtn.disabled = !(appState.reporterDraft || '').trim();
+    DOM.sendBtn.classList.toggle('is-disabled', DOM.sendBtn.disabled);
     return;
   }
 
@@ -614,6 +781,10 @@ function setupEventListeners() {
   });
   DOM.moreBtn.addEventListener('click', () => showToast('功能开发中...'));
   DOM.inputBox.addEventListener('click', () => {
+    if (isObservationInputPhase()) {
+      return;
+    }
+
     if (isReporterChatActive() && appState.reporterDraft && !appState.reporterDocLocked) {
       showToast('回复内容已自动填充，点击发送即可');
       return;
@@ -625,6 +796,44 @@ function setupEventListeners() {
     showToast('当前无法发送消息');
   });
   DOM.sendBtn.addEventListener('click', () => {
+    sendReporterReply();
+  });
+  DOM.inputBox.addEventListener('input', () => {
+    if (!isObservationInputPhase()) return;
+
+    appState.reporterDraft = (DOM.inputBox.textContent || '').trim();
+    DOM.sendBtn.disabled = !appState.reporterDraft;
+    DOM.sendBtn.classList.toggle('is-disabled', DOM.sendBtn.disabled);
+    saveWechatState();
+  });
+  DOM.inputBox.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      if (!isReporterChatActive() || DOM.sendBtn.disabled) {
+        return;
+      }
+      sendReporterReply();
+    }
+  });
+  DOM.addFriendInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      searchReporter();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter' || event.shiftKey) return;
+
+    const target = event.target;
+    const isTypingInInput = target instanceof HTMLElement
+      && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA');
+    const isTypingInEditable = target instanceof HTMLElement && target.isContentEditable;
+    if (isTypingInInput || isTypingInEditable) return;
+
+    if (!isReporterChatActive() || DOM.sendBtn.disabled) return;
+
+    event.preventDefault();
     sendReporterReply();
   });
   DOM.searchInput.addEventListener('input', () => {
@@ -703,6 +912,11 @@ function switchToAddFriend() {
 function sendReporterReply() {
   if (!isReporterChatActive()) {
     showToast('当前无法发送消息');
+    return;
+  }
+
+  if (isObservationInputPhase()) {
+    handleObservationReply();
     return;
   }
 
@@ -1128,6 +1342,8 @@ function addReporter() {
   appState.reporterDocLocked = false;
   appState.reporterDocRead = false;
   appState.reporterDraft = '';
+  appState.reporterObservationAttempts = 0;
+  appState.reporterObservationHintShown = false;
   appState.reporterMessages = cloneReporterBootstrapMessages();
   recordWechatClick('add_reporter', { weChat: reporterContact.weChat });
   advanceReporterStory();
@@ -1157,7 +1373,7 @@ function getActiveContact() {
 }
 
 // ===== Toast提示 =====
-function showToast(message, duration = 2000) {
+function showToast(message, duration = 3600) {
   DOM.toast.textContent = message;
   DOM.toast.classList.add('show');
   

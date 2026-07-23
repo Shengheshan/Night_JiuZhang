@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Archive Search</title>
+  <style>
+    :root {
+      --bg-top: #f6f8fc;
+      --bg-bottom: #ffffff;
+      --text-main: #1f2937;
+      --text-muted: #5f6b7a;
+      --brand-blue: #1a73e8;
+      --card-border: #dfe6ef;
+      --card-shadow: 0 10px 26px rgba(31, 41, 55, 0.08);
+      --focus-ring: 0 0 0 4px rgba(26, 115, 232, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 60%);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    .bg-orb {
+      position: fixed;
+      border-radius: 999px;
+      filter: blur(2px);
+      opacity: 0.55;
+      pointer-events: none;
+      z-index: 0;
+      animation: float 11s ease-in-out infinite;
+    }
+
+    .bg-orb.one {
+      width: 260px;
+      height: 260px;
+      top: -80px;
+      left: -60px;
+      background: radial-gradient(circle, rgba(26,115,232,0.24) 0%, rgba(26,115,232,0) 70%);
+    }
+
+    .bg-orb.two {
+      width: 340px;
+      height: 340px;
+      right: -110px;
+      bottom: -120px;
+      background: radial-gradient(circle, rgba(16,185,129,0.22) 0%, rgba(16,185,129,0) 72%);
+      animation-delay: 1.3s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(12px); }
+    }
+
+    .shell {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 44px 18px 30px;
+    }
+
+    .brand {
+      margin-top: 52px;
+      margin-bottom: 22px;
+      font-size: clamp(2.1rem, 6vw, 4rem);
+      letter-spacing: 0.02em;
+      font-weight: 700;
+      user-select: none;
+      line-height: 1;
+      animation: rise 500ms ease;
+    }
+
+    .brand span:nth-child(1) { color: #4285f4; }
+    .brand span:nth-child(2) { color: #ea4335; }
+    .brand span:nth-child(3) { color: #fbbc05; }
+    .brand span:nth-child(4) { color: #4285f4; }
+    .brand span:nth-child(5) { color: #34a853; }
+    .brand span:nth-child(6) { color: #ea4335; }
+
+    @keyframes rise {
+      from { transform: translateY(8px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .search-wrap {
+      width: min(760px, 96vw);
+    }
+
+    .search-form {
+      display: flex;
+      align-items: center;
+      border: 1px solid #d7dfe9;
+      border-radius: 999px;
+      background: #fff;
+      padding: 8px 10px 8px 18px;
+      box-shadow: 0 2px 10px rgba(31, 41, 55, 0.08);
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+      animation: rise 580ms ease;
+    }
+
+    .search-form:focus-within {
+      border-color: var(--brand-blue);
+      box-shadow: var(--focus-ring), 0 14px 26px rgba(31, 41, 55, 0.12);
+    }
+
+    .search-input {
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 1rem;
+      padding: 9px 10px;
+      color: var(--text-main);
+      background: transparent;
+    }
+
+    .search-button {
+      border: none;
+      background: var(--brand-blue);
+      color: #fff;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 10px 18px;
+      cursor: pointer;
+      transition: transform 120ms ease, background 120ms ease;
+    }
+
+    .search-button:hover {
+      transform: translateY(-1px);
+      background: #0f63d8;
+    }
+
+    .hint {
+      margin: 14px 8px 0;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      text-align: center;
+    }
+
+    .result-meta {
+      width: min(760px, 96vw);
+      margin-top: 30px;
+      color: #425067;
+      font-size: 0.92rem;
+      min-height: 1.4em;
+    }
+
+    .results {
+      width: min(760px, 96vw);
+      margin-top: 12px;
+      display: grid;
+      gap: 14px;
+      padding-bottom: 36px;
+    }
+
+    .result-card {
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      background: #fff;
+      padding: 16px 18px;
+      box-shadow: var(--card-shadow);
+      animation: fadeIn 360ms ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-url {
+      color: #2f7c32;
+      font-size: 0.86rem;
+      margin-bottom: 6px;
+      word-break: break-all;
+    }
+
+    .result-title {
+      margin: 0;
+      font-size: 1.08rem;
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+    .result-title a {
+      color: #204aad;
+      text-decoration: none;
+    }
+
+    .result-title a:hover {
+      text-decoration: underline;
+    }
+
+    .result-desc {
+      margin: 8px 0 0;
+      color: #3d4b60;
+      line-height: 1.6;
+      font-size: 0.96rem;
+    }
+
+    mark {
+      background: #fff3bf;
+      color: #1f2937;
+      border-radius: 3px;
+      padding: 0 2px;
+    }
+
+    .empty {
+      border: 1px dashed #ced8e5;
+      border-radius: 12px;
+      padding: 22px;
+      text-align: center;
+      color: #5f6b7a;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .footer-links {
+      margin-top: auto;
+      padding-top: 20px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      font-size: 0.92rem;
+    }
+
+    .footer-links a {
+      color: #44546a;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 120ms ease;
+    }
+
+    .footer-links a:hover {
+      border-color: #44546a;
+    }
+
+    @media (max-width: 640px) {
+      .shell {
+        padding-top: 26px;
+      }
+
+      .brand {
+        margin-top: 28px;
+      }
+
+      .search-form {
+        padding-right: 8px;
+      }
+
+      .search-button {
+        padding: 10px 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-orb one" aria-hidden="true"></div>
+  <div class="bg-orb two" aria-hidden="true"></div>
+
+  <main class="shell">
+    <h1 class="brand" aria-label="Google 风格搜索">
+      <span>A</span><span>r</span><span>c</span><span>h</span><span>i</span><span>ve</span>
+    </h1>
+
+    <section class="search-wrap" aria-label="关键词搜索">
+      <form id="search-form" class="search-form" autocomplete="off">
+        <input
+          id="search-input"
+          class="search-input"
+          type="text"
+          placeholder="输入关键词，例如：登录、结局、邮件、微信"
+          aria-label="输入关键词"
+        >
+        <button class="search-button" type="submit">搜索</button>
+      </form>
+      <p class="hint">支持关键词搜索，按 Enter 或点击“搜索”即可，结果默认在新标签页打开。</p>
+    </section>
+
+    <p class="result-meta" id="result-meta">输入关键词开始搜索。</p>
+    <section id="results" class="results" aria-live="polite"></section>
+
+    <nav class="footer-links" aria-label="页面导航">
+      <a href="level1.html" target="_blank" rel="noopener noreferrer">返回论坛</a>
+      <a href="desktop.html" target="_blank" rel="noopener noreferrer">返回桌面</a>
+      <a href="index.html" target="_blank" rel="noopener noreferrer">返回入口</a>
+    </nav>
+  </main>
+
+  <script>
+    const SEARCH_DATA = [
+      {
+        title: '九章市周边游推荐：山水秀丽的九章山，还有一座“藏在山里”的古朴村落',
+        url: 'news_jiuzhang_life.html',
+        desc: '九章生活宝：九章山、九章山村与九章寺出行建议，附安全提示与周末路线建议。',
+        keywords: '九章生活宝 九章山 九章山村 九章寺 王至欣 周边游',
+        searchable: '九章山 九章山村'
+      },
+      {
+        title: '九章山公路突发悲剧！高中数学教师雨天驾车冲出护栏，不幸坠谷身亡',
+        url: 'news_tianhong.html',
+        desc: '本报记者讯：九章高中数学教师田红在雨天驾车途中坠谷身亡，事故原因仍在调查。',
+        keywords: '田红 九章高中 相对论 九章山 公路 事故 新闻',
+        searchable: '田红'
+      },
+      {
+        title: '九章山再传噩耗！年轻男子无保护攀爬险峰，失足坠落不幸身亡',
+        url: 'news_lijunhong.html',
+        desc: '本报记者讯：李俊鸿在九章山坠落身亡，相关部门仍在调查具体经过。',
+        keywords: '李俊鸿 九章山 新闻 坠崖 死亡地点 母亲 报道'
+      },
+      {
+        title: '登录页面',
+        url: 'login.html',
+        desc: '输入账号密码，进入私有个人主页。',
+        keywords: '登录 账号 密码 个人主页 验证'
+      },
+    ];
+
+    const form = document.getElementById('search-form');
+    const input = document.getElementById('search-input');
+    const resultsEl = document.getElementById('results');
+    const metaEl = document.getElementById('result-meta');
+
+    function escapeRegExp(text) {
+      return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function highlightText(text, terms) {
+      if (!terms.length) return text;
+      const pattern = terms.map((term) => escapeRegExp(term)).join('|');
+      const regex = new RegExp(`(${pattern})`, 'gi');
+      return text.replace(regex, '<mark>$1</mark>');
+    }
+
+    function searchItems(query) {
+      const trimmed = query.trim().toLowerCase();
+      if (!trimmed) return [];
+
+      const terms = trimmed.split(/\s+/).filter(Boolean);
+      return SEARCH_DATA.filter((item) => {
+        const base = `${item.title} ${item.desc} ${item.keywords}`;
+        const haystack = `${item.searchable || base}`.toLowerCase();
+        return terms.every((term) => haystack.includes(term));
+      });
+    }
+
+    function renderResults(items, query) {
+      const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      resultsEl.innerHTML = '';
+
+      if (!query.trim()) {
+        metaEl.textContent = '输入关键词开始搜索。';
+        return;
+      }
+
+      if (!items.length) {
+        metaEl.textContent = `没有找到和“${query}”相关的结果。`;
+        resultsEl.innerHTML = '<div class="empty">尝试更短的词，或换一个关键词组合。</div>';
+        return;
+      }
+
+      metaEl.textContent = `找到 ${items.length} 条和“${query}”相关的结果`;
+
+      items.forEach((item) => {
+        const card = document.createElement('article');
+        card.className = 'result-card';
+        card.innerHTML = `
+          <div class="result-url">Pages/${item.url}</div>
+          <h2 class="result-title"><a href="${item.url}" target="_blank" rel="noopener noreferrer">${highlightText(item.title, terms)}</a></h2>
+          <p class="result-desc">${highlightText(item.desc, terms)}</p>
+        `;
+        resultsEl.appendChild(card);
+      });
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const query = input.value;
+      const matched = searchItems(query);
+      renderResults(matched, query);
+    });
+
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        input.value = '';
+        renderResults([], '');
+      }
+    });
+  </script>
+</body>
+</html>

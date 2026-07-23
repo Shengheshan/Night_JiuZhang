@@ -248,6 +248,17 @@
         </div>
         <p class="icon-label">微信</p>
       </a>
+      <a class="desktop-icon" href="search.html" title="打开搜索">
+        <div class="icon-surface">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="8" width="26" height="26" rx="8" fill="#FFFFFF" stroke="#B8C5D8"/>
+            <circle cx="19.5" cy="19.5" r="6" stroke="#1A73E8" stroke-width="3"/>
+            <path d="M24 24L29 29" stroke="#1A73E8" stroke-width="3" stroke-linecap="round"/>
+            <path d="M14.5 19.5H24.5" stroke="#34A853" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+          </svg>
+        </div>
+        <p class="icon-label">搜索</p>
+      </a>
     </div>
     <div class="desktop-main"></div>
   </div>
@@ -265,5 +276,33 @@
       <div class="date">2026/10/12</div>
     </div>
   </div>
+  <script>
+    (function resetSessionSaveOnDesktopReload() {
+      function isReloadNavigation() {
+        try {
+          const navEntries = performance.getEntriesByType && performance.getEntriesByType('navigation');
+          if (Array.isArray(navEntries) && navEntries.length > 0) {
+            return navEntries[0].type === 'reload';
+          }
+        } catch (error) {
+          // Ignore and fallback below.
+        }
+
+        return !!(performance && performance.navigation && performance.navigation.type === 1);
+      }
+
+      if (!isReloadNavigation()) return;
+
+      [
+        'mvp.wechat.state.v1',
+        'mvp.wechat.clickLog.v1',
+        'mvp.mail.state.v1',
+        'mvp.mail.clickLog.v1',
+        'forum-horror-target'
+      ].forEach((key) => {
+        sessionStorage.removeItem(key);
+      });
+    })();
+  </script>
 </body>
 </html>

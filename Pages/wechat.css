@@ -637,16 +637,16 @@ html, body {
 
 .input-box {
   flex: 1;
-  min-height: 28px;
+  min-height: 60px;
   border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 6px 10px;
+  border-radius: 8px;
+  padding: 10px 12px;
   background: #fff;
-  font-size: 13px;
+  font-size: 14px;
   color: #111;
-  line-height: 1.4;
+  line-height: 1.55;
   overflow-y: auto;
-  max-height: 100px;
+  max-height: 220px;
 }
 
 .input-box[contenteditable="false"] {
@@ -862,22 +862,27 @@ html, body {
 /* Toast提示 */
 .toast {
   position: fixed;
-  bottom: 20px;
+  bottom: 34px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.7);
+  background: linear-gradient(180deg, rgba(191, 29, 29, 0.96), rgba(145, 18, 18, 0.96));
   color: #fff;
-  padding: 12px 16px;
-  border-radius: 4px;
-  font-size: 13px;
-  z-index: 1000;
+  padding: 14px 20px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.34);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  z-index: 1400;
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.28s ease, transform 0.28s ease;
   pointer-events: none;
 }
 
 .toast.show {
   opacity: 1;
+  transform: translateX(-50%) translateY(-2px);
   pointer-events: auto;
 }
 

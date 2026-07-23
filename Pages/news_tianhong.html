@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>九章山公路突发悲剧 - 特别报道</title>
+  <style>
+    :root {
+      --bg: #f2f5f9;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --accent: #9b1c1c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 8% 0%, #eef3fb 0%, #f6f8fc 36%, #f2f5f9 100%);
+      color: var(--text);
+      font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "Microsoft YaHei", serif;
+      line-height: 1.9;
+      padding: 28px 16px 56px;
+    }
+
+    .news-shell {
+      width: min(920px, 100%);
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 20px 48px rgba(24, 39, 75, 0.1);
+      overflow: hidden;
+    }
+
+    .news-head {
+      padding: 28px 34px 24px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #ffffff 0%, #fafbff 100%);
+    }
+
+    .news-kicker {
+      margin: 0;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      font-size: 0.92rem;
+    }
+
+    .news-title {
+      margin: 10px 0 12px;
+      font-size: clamp(1.5rem, 2.6vw, 2.3rem);
+      line-height: 1.35;
+      color: #111827;
+    }
+
+    .news-meta {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .news-body {
+      padding: 30px 34px 30px;
+    }
+
+    .news-body p {
+      margin: 0 0 16px;
+      font-size: 1.03rem;
+    }
+
+    .news-body h2 {
+      margin: 30px 0 12px;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      color: #111827;
+      line-height: 1.5;
+    }
+
+    blockquote {
+      margin: 12px 0 16px;
+      padding: 10px 14px;
+      border-left: 4px solid #c4ccd8;
+      background: #f8fafc;
+      color: #273244;
+    }
+
+    .photo {
+      margin: 22px 0;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fcfdff;
+    }
+
+    .photo img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 460px;
+      object-fit: cover;
+    }
+
+    .photo figcaption {
+      font-size: 0.86rem;
+      color: #6b7280;
+      padding: 10px 12px;
+      border-top: 1px solid var(--line);
+      background: #fafcff;
+    }
+
+    .news-footer {
+      border-top: 1px solid var(--line);
+      background: #fbfcff;
+      padding: 20px 34px 26px;
+    }
+
+    .news-footer p {
+      margin: 0 0 8px;
+      color: #4b5563;
+      font-size: 0.95rem;
+    }
+
+    .nav-row {
+      margin-top: 16px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .nav-row a {
+      text-decoration: none;
+      color: #1f4ea8;
+      font-size: 0.95rem;
+      border-bottom: 1px solid transparent;
+    }
+
+    .nav-row a:hover {
+      border-color: #1f4ea8;
+    }
+
+    @media (max-width: 700px) {
+      .news-head,
+      .news-body,
+      .news-footer {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <article class="news-shell">
+    <header class="news-head">
+      <p class="news-kicker">本报记者讯</p>
+      <h1 class="news-title">九章山公路突发悲剧！高中数学教师雨天驾车冲出护栏，不幸坠谷身亡</h1>
+      <p class="news-meta">发布单位：九章观察报社 | 发布时间：2025年11月18日</p>
+    </header>
+
+    <section class="news-body">
+      <p>近日，通往九章山村的盘山公路发生一起严重交通事故。一辆小型轿车在经过一处急转弯时突然失控，冲破道路护栏后坠入路旁浅谷。车内驾驶员经确认已无生命体征。</p>
+
+      <p>据了解，遇难者名叫<strong>田红</strong>，生前是<strong>九章高中</strong>的数学教师。</p>
+
+      <p>事发当日，九章山一带持续降雨，山路湿滑，部分路段能见度较低。事故发生的位置位于通往九章山村的一处连续弯道附近，道路一侧紧邻山体，另一侧则是落差较大的林地浅谷。</p>
+
+      <p>根据现场情况，田红驾驶的车辆在进入急转弯后疑似因路面湿滑而发生侧滑，随后失去控制，撞破护栏，连车带人一起冲出道路，最终坠落至下方浅谷。</p>
+
+      <figure class="photo">
+        <img src="../images/田红车辆坠毁现场.png" alt="田红车辆坠毁现场">
+        <figcaption>图1：田红车辆坠毁现场，道路弯道狭窄且雨天湿滑，救援人员抵达后开展处置。</figcaption>
+      </figure>
+
+      <p>附近居民发现异常后立即报警。救援人员赶到现场时，车辆已经严重变形。由于谷地坡面泥泞，现场救援工作一度受到影响。</p>
+
+      <p>遗憾的是，田红最终未能获救。</p>
+
+      <p>目前，相关部门初步判断事故可能与雨天路滑、弯道路况复杂有关，具体原因仍在进一步调查之中。</p>
+
+      <h2>“她总能把枯燥的数学课讲得很有意思”</h2>
+
+      <p>田红去世的消息传回学校后，不少学生都难以接受。</p>
+
+      <p>在学生们的印象中，田红并不是一位严肃古板的数学老师。相反，她性格开朗，平时很喜欢在课堂上与同学们交流，也经常主动询问学生是否真正理解了题目。</p>
+
+      <p>一名学生回忆道：</p>
+
+      <blockquote>“田老师平时特别爱笑。她上课的时候不会只顾着讲公式，经常会突然问我们一些问题，或者拿生活里的事情举例。就算有人答错，她也不会生气，而是会顺着那个思路继续讲下去。”</blockquote>
+
+      <p>另一名学生表示，田红经常在课堂上引用爱因斯坦的<strong>相对论</strong>，并借此和同学们谈一些关于生活和选择的道理。</p>
+
+      <blockquote>“她总说，很多事情不能只站在一个位置上看。换一个角度，原本觉得绝对的事情，可能就会有完全不同的答案。”</blockquote>
+
+      <p>学生们说，田红有时会借<strong>相对论</strong>告诉大家，成绩并不能完全定义一个人，眼前的失败也未必代表最终的结果。她希望学生在学习数学的同时，也能学会从不同角度理解问题。</p>
+
+      <blockquote>“她讲这些话的时候，我们有时候还会觉得她跑题了。可是现在回想起来，那些话反而记得特别清楚。”</blockquote>
+
+      <h2>突如其来的横祸</h2>
+
+      <p>事故发生后，田红所教班级的学生自发在教室中摆放了鲜花和写有悼念话语的卡片。许多学生直到看到空着的讲台，才真正意识到，那位熟悉的老师已经不会再回来。</p>
+
+      <p>有学生在悼念卡片上写道：</p>
+
+      <blockquote>“您曾告诉我们，要从不同的角度看待世界。可是这一次，我们无论站在哪个角度，都无法接受您的离开。”</blockquote>
+
+      <p>一场突如其来的车祸，带走了一名教师，也让许多学生失去了一位愿意倾听他们、陪伴他们成长的人。</p>
+
+      <p>对于田红的家人、同事和学生而言，这场意外来得太过突然。曾经开朗的笑声、课堂上的互动，以及那些夹杂在数学公式之间的人生道理，如今都成为了他们对田红最后的回忆。</p>
+
+      <p>雨仍会停，山路也终将恢复通行。但那个曾经站在讲台上，用相对论教学生理解人生的老师，却永远停在了前往九章山村的路上。</p>
+    </section>
+
+    <footer class="news-footer">
+      <p>关键词：田红、九章山公路、交通事故、雨天驾驶、校园悼念</p>
+      <p>话题：#九章山事故 #教师离世 #雨天行车安全</p>
+      <p>来源：九章观察报社 社会新闻中心</p>
+      <p>日期：2025年11月</p>
+      <div class="nav-row">
+        <a href="search.html" target="_blank" rel="noopener noreferrer">返回搜索页</a>
+        <a href="desktop.html" target="_blank" rel="noopener noreferrer">返回桌面</a>
+      </div>
+    </footer>
+  </article>
+</body>
+</html>

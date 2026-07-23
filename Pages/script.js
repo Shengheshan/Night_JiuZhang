@@ -11,11 +11,23 @@ const MAIL_DEFAULT_STATE = {
 
 let mailState = loadMailState();
 
+function readSessionJSON(key) {
+  try {
+    const raw = sessionStorage.getItem(key);
+    return raw ? JSON.parse(raw) : null;
+  } catch (error) {
+    return null;
+  }
+}
+
+function writeSessionJSON(key, value) {
+  sessionStorage.setItem(key, JSON.stringify(value));
+}
+
 function loadMailState() {
   try {
-    const raw = localStorage.getItem(MAIL_STATE_KEY);
-    if (!raw) return { ...MAIL_DEFAULT_STATE };
-    const parsed = JSON.parse(raw);
+    const parsed = readSessionJSON(MAIL_STATE_KEY);
+    if (!parsed) return { ...MAIL_DEFAULT_STATE };
     return {
       unread: Array.isArray(parsed.unread) ? parsed.unread : [...MAIL_DEFAULT_STATE.unread],
       activeMailId: typeof parsed.activeMailId === 'string' ? parsed.activeMailId : null
@@ -26,20 +38,19 @@ function loadMailState() {
 }
 
 function saveMailState() {
-  localStorage.setItem(MAIL_STATE_KEY, JSON.stringify(mailState));
+  writeSessionJSON(MAIL_STATE_KEY, mailState);
 }
 
 function recordMailClick(action, payload = {}) {
   try {
-    const raw = localStorage.getItem(MAIL_CLICK_LOG_KEY);
-    const logs = raw ? JSON.parse(raw) : [];
+    const logs = readSessionJSON(MAIL_CLICK_LOG_KEY) || [];
     logs.push({
       action,
       payload,
       timestamp: new Date().toISOString()
     });
     const trimmed = logs.slice(-500);
-    localStorage.setItem(MAIL_CLICK_LOG_KEY, JSON.stringify(trimmed));
+    writeSessionJSON(MAIL_CLICK_LOG_KEY, trimmed);
   } catch (error) {
     // Ignore logging failures to avoid interrupting page behavior.
   }
